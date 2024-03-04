@@ -2,6 +2,8 @@
 
 import pandas as pd
 import folium
+
+
 def load_affiliations():
     """Carga el archivo scopus-papers.csv y retorna un dataframe con la columna 'Affiliations'"""
     dataframe = pd.read_csv(
@@ -47,6 +49,7 @@ def clean_countries(affiliations):
     )
     return affiliations
 
+
 def count_country_frequency(affiliations):
     """Cuenta la frecuencia de aparición de cada país en la columna 'countries'"""
     countries = affiliations["countries"].copy()
@@ -54,6 +57,7 @@ def count_country_frequency(affiliations):
     countries = countries.explode()
     countries = countries.value_counts()
     return countries
+
 
 def plot_world_map(countries):
     m = folium.Map(location=[0, 0], zoom_start=2)
@@ -68,6 +72,7 @@ def plot_world_map(countries):
 
     m.save("map.html")
 
+
 def main():
     """Función principal"""
     affiliations = load_affiliations()
@@ -77,6 +82,7 @@ def main():
     countries = count_country_frequency(affiliations)
     countries.to_csv("countries.csv")
     plot_world_map(countries)
+
 
 if __name__ == "__main__":
   main()
