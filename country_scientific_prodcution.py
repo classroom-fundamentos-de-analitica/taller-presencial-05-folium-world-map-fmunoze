@@ -12,8 +12,8 @@ def load_affiliations():
         index_col=None,
     )[["Affiliations"]]
     return dataframe
-  
-  
+
+
 def remove_na_rows(affiliations):
     """Elimina las filas con valores nulos en la columna 'Affiliations'"""
 
@@ -21,8 +21,8 @@ def remove_na_rows(affiliations):
     affiliations = affiliations.dropna(subset=["Affiliations"])
 
     return affiliations
-  
-  
+
+
 def add_countries_column(affiliations):
     """Transforma la columna 'Affiliations' a una lista de paises."""
 
@@ -51,21 +51,28 @@ def clean_countries(affiliations):
 
 
 def count_country_frequency(affiliations):
-    """Cuenta la frecuencia de aparición de cada país en la columna 'countries'"""
+    """Cuenta la frecuencia de cada país en la columna 'countries'"""
+
     countries = affiliations["countries"].copy()
-    countries = affiliations["countries"].str.split(", ")
+    countries = countries.str.split(", ")
     countries = countries.explode()
     countries = countries.value_counts()
     return countries
 
 
 def plot_world_map(countries):
+    """Grafica un mapa mundial con la frecuencia de cada país."""
+
+    countries = countries.copy()
+    countries = countries.to_frame()
+    countries = countries.reset_index()
+
     m = folium.Map(location=[0, 0], zoom_start=2)
-    
+
     folium.Choropleth(
         geo_data="https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/world-countries.json",
         data=countries,
-        columns=["country", "count"],
+        columns=["countries", "count"],
         key_on="feature.properties.name",
         fill_color="Greens",
     ).add_to(m)
@@ -85,4 +92,4 @@ def main():
 
 
 if __name__ == "__main__":
-  main()
+    main()
