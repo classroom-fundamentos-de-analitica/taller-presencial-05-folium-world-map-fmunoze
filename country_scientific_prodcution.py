@@ -65,7 +65,7 @@ def plot_world_map(countries):
     folium.Choropleth(
         geo_data="https://raw.githubusercontent.com/python-visualization/folium/master/examples/data/world-countries.json",
         data=countries,
-        columns=["Country", "count"],
+        columns=["country", "count"],
         key_on="feature.properties.name",
         fill_color="Greens",
     ).add_to(m)
